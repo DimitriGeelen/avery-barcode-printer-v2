@@ -1,8 +1,5 @@
 import React from 'react';
-
-export const AVERY_TEMPLATES = {
-  // [Previous template definitions remain the same]
-};
+import { AVERY_TEMPLATES } from './TemplateData';
 
 const LabelTemplate = ({ template, barcodes }) => {
   const templateConfig = AVERY_TEMPLATES[template]?.labels;
@@ -26,7 +23,9 @@ const LabelTemplate = ({ template, barcodes }) => {
     height: templateConfig.pageHeight,
     margin: '0 auto',
     backgroundColor: 'white',
-    position: 'relative'
+    position: 'relative',
+    pageBreakAfter: 'always',
+    breakAfter: 'page'
   };
 
   const pageContainerStyle = {
@@ -36,30 +35,20 @@ const LabelTemplate = ({ template, barcodes }) => {
   };
 
   // Calculate grid positions for a single page
-  const getPositions = (pageSize) => {
-    const positions = [];
+  const getLabelStyle = (row, col) => {
     const labelOuterWidth = `calc(${templateConfig.labelWidth} + ${templateConfig.horizontalSpacing})`;
-
-    for (let row = 0; row < templateConfig.rows; row++) {
-      for (let col = 0; col < templateConfig.columns; col++) {
-        const index = row * templateConfig.columns + col;
-        if (index < pageSize) {
-          positions.push({
-            left: `calc(${templateConfig.marginLeft} + (${labelOuterWidth} * ${col}))`,
-            top: `calc(${templateConfig.marginTop} + (${templateConfig.labelHeight} * ${row}))`,
-            width: templateConfig.labelWidth,
-            height: templateConfig.labelHeight,
-            position: 'absolute',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            boxSizing: 'border-box',
-            padding: '2mm'
-          });
-        }
-      }
-    }
-    return positions;
+    return {
+      left: `calc(${templateConfig.marginLeft} + (${labelOuterWidth} * ${col}))`,
+      top: `calc(${templateConfig.marginTop} + (${templateConfig.labelHeight} * ${row}))`,
+      width: templateConfig.labelWidth,
+      height: templateConfig.labelHeight,
+      position: 'absolute',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      boxSizing: 'border-box',
+      padding: '2mm'
+    };
   };
 
   return (
@@ -71,10 +60,10 @@ const LabelTemplate = ({ template, barcodes }) => {
           className={`page ${pageIndex > 0 ? 'page-break' : ''}`}
         >
           {pageBarcodes.map((barcode, index) => {
-            const positions = getPositions(pageBarcodes.length);
-            if (index >= positions.length) return null;
+            const row = Math.floor(index / templateConfig.columns);
+            const col = index % templateConfig.columns;
             return (
-              <div key={index} style={positions[index]} className="label">
+              <div key={index} style={getLabelStyle(row, col)} className="label">
                 <img 
                   src={barcode.image} 
                   alt={barcode.value}
