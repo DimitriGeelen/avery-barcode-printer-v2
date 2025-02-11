@@ -45,6 +45,7 @@
     break-after: page;
     margin: 0 !important;
     padding: 0 !important;
+    position: relative !important;
   }
 
   .page:last-child {
@@ -56,6 +57,7 @@
   .label {
     break-inside: avoid;
     page-break-inside: avoid;
+    position: absolute !important;
   }
 
   /* Remove any background colors when printing */
@@ -77,5 +79,11 @@
     margin: 0 !important;
     padding: 0 !important;
     overflow: hidden;
+  }
+
+  img {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
   }
 }
