@@ -1,5 +1,5 @@
 import React from 'react';
-import { AVERY_TEMPLATES } from './LabelTemplate';
+import { AVERY_TEMPLATES } from './TemplateData';
 
 const TemplateInfo = ({ template }) => {
   const templateData = AVERY_TEMPLATES[template];
