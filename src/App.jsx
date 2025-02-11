@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import BarcodeGenerator from './components/BarcodeGenerator';
-import LabelTemplate, { AVERY_TEMPLATES } from './components/LabelTemplate';
+import LabelTemplate from './components/LabelTemplate';
 import TemplateInfo from './components/TemplateInfo';
+import { AVERY_TEMPLATES } from './components/TemplateData';
 
 function App() {
   const [barcodes, setBarcodes] = useState([]);
